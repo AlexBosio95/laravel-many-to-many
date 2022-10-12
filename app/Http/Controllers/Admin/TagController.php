@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -14,7 +15,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::all();
+        return view('admin.tags.index', compact('tags'));
     }
 
     /**
@@ -24,7 +26,9 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        $tags = Tag::all();
+        return view('admin.tags.create', compact('tags'));
+
     }
 
     /**
@@ -35,7 +39,22 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:100|min:2',
+        ]);
+
+        $data = $request->all();
+
+        $tag = new Tag();
+        $tag->fill($data);
+
+        $slug = $this->getUniqueSlug($tag->name);
+
+        $tag->slug = $slug;
+
+        $tag->save();
+
+        return redirect()->route('admin.tags.index')->with('create', 'Item created');
     }
 
     /**
@@ -81,5 +100,22 @@ class TagController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function getUniqueSlug($name){
+
+        $slug = Tag::slug($name, '-');
+
+        $checkSlug = Tag::where('slug', $slug)->first();
+
+        $count = 1;
+
+        while ($checkSlug) {
+            $slug = Tag::slug($name, '-' . $count, '-');
+            $count++;
+            $checkSlug = Tag::where('slug', $slug)->first();
+        }
+
+        return $slug;
     }
 }

@@ -90,9 +90,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        $tags = Tag::all();
         $data = Post::findOrFail($id);
         $categories = Category::all();
-        return view('admin.posts.edit', compact('data', 'categories'));
+        return view('admin.posts.edit', compact('data', 'categories', 'tags'));
     }
 
     /**
@@ -107,7 +108,7 @@ class PostController extends Controller
         $request->validate([
             'name' => 'required|max:100|min:2',
             'content' => 'required|max:65535|min:2',
-            'tag' => 'required|max:255|min:2',
+            'tags' => 'exists:tags,id',
             'category_id' => 'nullable|exists:categories,id'
 
         ]);
@@ -119,12 +120,12 @@ class PostController extends Controller
             $data['slug'] = $this->getUniqueSlug($data['name']);
         }
 
-        if ($post->tag !== $data['tag']) {
-            $data['tag'] = $this->tagToHashtag($data['tag']);
-        }
-
         $post->update($data);
         $post->save();
+
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        }
 
         return redirect()->route('admin.posts.edit', ['post' => $post])->with('update', 'Item updated');
     }

@@ -16,6 +16,8 @@
         </div>
     @endif
 
+        <a class="fs-2" href="{{route('admin.posts.create')}}"><i class="fa-solid fa-square-plus"></i></a>
+
         <table class="table table-light table-striped">
 
             <thead>
@@ -23,6 +25,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Title</th>
                     <th scope="col">Slug</th>
+                    <th scope="col">Tag</th>
                     <th scope="col">Category</th>
                     <th scope="col">Action</th>
                 </tr>

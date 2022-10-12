@@ -16,6 +16,8 @@
         </div>
     @endif
 
+    <a class="fs-2" href="{{route('admin.category.create')}}"><i class="fa-solid fa-square-plus"></i></a>
+
         <table class="table table-light table-striped">
 
             <thead>
