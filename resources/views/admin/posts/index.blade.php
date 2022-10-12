@@ -35,11 +35,11 @@
                     <th scope="row">{{$post->id}}</th>
                     <td>{{$post->name}}</td>
                     <td>{{$post->slug}}</td>
-                    {{-- <td>
+                    <td>
                         @foreach ($post->tags as $tag)
                             {{$tag->name}}; 
                         @endforeach
-                    </td> --}}
+                    </td>
                     <td>{{($post->category) ? $post->category->name : 'Not'}}</td>
                     <td class="d-flex justify-content-center">
                         <a class="btn btn-success mx-2" href="{{route('admin.posts.show', ['post' => $post])}}">Preview</a>

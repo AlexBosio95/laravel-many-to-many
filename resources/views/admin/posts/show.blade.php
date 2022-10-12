@@ -21,7 +21,10 @@
             </div>
 
             <div class="card-footer text-muted">
-                Tag: {{$data->tag}}
+                Tags:
+                @foreach ($data->tags as $tag)
+                    {{$tag->name}}; 
+                @endforeach
             </div>
         </div>    
     </div>

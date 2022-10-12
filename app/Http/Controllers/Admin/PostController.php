@@ -77,8 +77,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        $tags = Tag::all();
         $data = Post::findOrFail($id);
-        return view('admin.posts.show', compact('data'));
+        return view('admin.posts.show', compact('data', 'tags'));
     }
 
     /**
