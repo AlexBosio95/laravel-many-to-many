@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Tag;
 use App\posts;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,8 +29,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        $tags = Tag::all();
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -40,28 +42,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|max:100|min:2',
             'content' => 'required|max:65535|min:2',
-            'tag' => 'required|max:255|min:2',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id',
         ]);
 
         $data = $request->all();
-
-        
         $newPost = new posts();
         
         $newPost->fill($data);
-        
-        $tag = $this->tagToHashtag($newPost->tag);
         $slug = $this->getUniqueSlug($newPost->name);
-
-        $newPost->tag = $tag;
         $newPost->slug = $slug;
 
-
         $newPost->save();
+
+        if (array_key_exists('tags', $data)) {
+            $newPost->tags()->sync($data['tags']);
+        }
 
         return redirect()->route('admin.posts.index')->with('create', 'Item created');
     }
@@ -154,18 +154,5 @@ class PostController extends Controller
         }
 
         return $slug;
-    }
-
-    protected function tagToHashtag($currentTag){
-
-        $mytag = explode(' ', $currentTag);
-        $arrayTag = [];
-
-        foreach ($mytag as $value) {
-            $arrayTag[] = Str::start($value, '#');
-        };
-
-        return implode(' ', $arrayTag);
-
     }
 }

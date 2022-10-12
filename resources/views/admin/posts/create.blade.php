@@ -23,15 +23,6 @@
                 @enderror
             </div>
 
-            <label for="tag" class="form-label">Tag</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control @error('tag') is-invalid @enderror" placeholder="enter the words separated by spaces" name="tag" value="{{old('tag')}}">
-                @error('tag')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-
             <div class="form-group">
                 <label for="CategorySelect">Category</label>
                 <select class="form-control @error('category_id') is-invalid @enderror" id="CategorySelect" name="category_id">
@@ -44,9 +35,25 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+            <div>
+                <h5>Select tags:</h5>
+                @foreach ($tags as $tag)
+                <div class="form-check form-check-inline">
+                    <input {{in_array($tag->id, old('tags', [])) ? 'checked' : ''}} name='tags[]' class="form-check-input" type="checkbox" id="{{$tag->id}}" value="{{$tag->id}}">
+                    <label class="form-check-label" for="{{$tag->id}}">{{$tag->name}}</label>
+                </div>
+                @endforeach
+
+                @error('tags')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
             
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </form>
         
     </div>
