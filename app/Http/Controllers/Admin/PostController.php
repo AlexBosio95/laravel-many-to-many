@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Tag;
-use App\posts;
+use App\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = posts::all();
+        $posts = Post::all();
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -51,17 +51,20 @@ class PostController extends Controller
         ]);
 
         $data = $request->all();
-        $newPost = new posts();
-        
-        $newPost->fill($data);
-        $slug = $this->getUniqueSlug($newPost->name);
-        $newPost->slug = $slug;
 
-        $newPost->save();
+        $post = new Post();
+        $post->fill($data);
+
+        $slug = $this->getUniqueSlug($post->name);
+
+        $post->slug = $slug;
+
+        $post->save();
 
         if (array_key_exists('tags', $data)) {
-            $newPost->tags()->sync($data['tags']);
+            $post->tags()->sync($data['tags']);
         }
+
 
         return redirect()->route('admin.posts.index')->with('create', 'Item created');
     }
@@ -74,7 +77,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $data = posts::findOrFail($id);
+        $data = Post::findOrFail($id);
         return view('admin.posts.show', compact('data'));
     }
 
@@ -86,7 +89,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $data = posts::findOrFail($id);
+        $data = Post::findOrFail($id);
         $categories = Category::all();
         return view('admin.posts.edit', compact('data', 'categories'));
     }
@@ -108,7 +111,7 @@ class PostController extends Controller
 
         ]);
 
-        $post = posts::findOrFail($id);
+        $post = Post::findOrFail($id);
         $data = $request->all();
 
         if ($post->name !== $data['name']) {
@@ -133,7 +136,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = posts::findOrFail($id);
+        $post = Post::findOrFail($id);
         $post->delete();
 
         return redirect()->route('admin.posts.index', ['post' => $post])->with('status', 'Item deleted');
@@ -143,14 +146,14 @@ class PostController extends Controller
 
         $slug = Str::slug($name, '-');
 
-        $checkSlug = posts::where('slug', $slug)->first();
+        $checkSlug = Post::where('slug', $slug)->first();
 
         $count = 1;
 
         while ($checkSlug) {
             $slug = Str::slug($name, '-' . $count, '-');
             $count++;
-            $checkSlug = posts::where('slug', $slug)->first();
+            $checkSlug = Post::where('slug', $slug)->first();
         }
 
         return $slug;
