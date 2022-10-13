@@ -4,6 +4,10 @@
 
     <div class="container">
 
+        <div class="my-3">
+            <a class="gestion-btn" href="{{route('admin.category.index')}}">< Back</i></a>
+        </div>
+
         <form action="{{route('admin.category.store')}}" method="POST">
             @csrf
             
@@ -15,7 +19,7 @@
                 @enderror
             </div>
             
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="gestion-btn">Create</button>
         </form>
         
     </div>

@@ -12,18 +12,18 @@
             </div>
         @endif
 
-    <div class="my-3">
-        <a class="gestion-btn" href="{{route('admin.category.index')}}">< Back</i></a>
-    </div>
+        <div class="my-3">
+            <a class="gestion-btn" href="{{route('admin.tag.index')}}">< Back</i></a>
+        </div>
 
-        <form action="{{route('admin.category.update', ['category' => $dataCategory])}}" method="POST">
+        <form action="{{route('admin.tag.update', ['tag' => $tag])}}" method="POST">
 
             @csrf
             @method('PUT')
             
-            <label for="name" class="form-label">Name Category</label>
+            <label for="name" class="form-label">Name Tag</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Title" name="name" value="{{old('name', $dataCategory->name)}}">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Tag name" name="name" value="{{old('name', $tag->name)}}">
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

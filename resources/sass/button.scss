@@ -1,0 +1,15 @@
+.gestion-btn{
+    border-radius: 0.5rem;
+    background-color: rgb(12, 80, 162);
+    color: white;
+    margin-right: 0.5rem;
+    padding: 0.5rem 2rem;
+    text-decoration: none;
+    border: none;
+
+    &:hover{
+        background-color: rgb(32, 52, 125);
+        color: white;
+        text-decoration: none;
+    }
+}

@@ -48,7 +48,11 @@
                 <h5>Select tags:</h5>
                 @foreach ($tags as $tag)
                 <div class="form-check form-check-inline">
-                    <input {{in_array($tag->id, old('tags', [])) ? 'checked' : ''}} name='tags[]' class="form-check-input" type="checkbox" id="{{$tag->id}}" value="{{$tag->id}}">
+                    @if ($errors->any())
+                    <input {{(in_array($tag->id, old('tags', []))) ? 'checked' : ''}} name='tags[]' class="form-check-input" type="checkbox" id="{{$tag->id}}" value="{{$tag->id}}">
+                    @else
+                    <input {{($data->tags->contains($tag))?'checked':''}} name='tags[]' class="form-check-input" type="checkbox" id="{{$tag->id}}" value="{{$tag->id}}">
+                    @endif
                     <label class="form-check-label" for="{{$tag->id}}">{{$tag->name}}</label>
                 </div>
                 @endforeach
@@ -60,7 +64,7 @@
                 @enderror
             </div>
             
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="gestion-btn mt-3">Update</button>
         </form>
         
     </div>

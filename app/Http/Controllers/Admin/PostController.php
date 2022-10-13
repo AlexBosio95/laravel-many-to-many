@@ -65,7 +65,6 @@ class PostController extends Controller
             $post->tags()->sync($data['tags']);
         }
 
-
         return redirect()->route('admin.posts.index')->with('create', 'Item created');
     }
 
@@ -125,6 +124,8 @@ class PostController extends Controller
 
         if (array_key_exists('tags', $data)) {
             $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->sync([]);
         }
 
         return redirect()->route('admin.posts.edit', ['post' => $post])->with('update', 'Item updated');
@@ -139,6 +140,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+        $post->tags()->sync([]);
         $post->delete();
 
         return redirect()->route('admin.posts.index', ['post' => $post])->with('status', 'Item deleted');

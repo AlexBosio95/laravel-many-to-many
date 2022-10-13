@@ -12,7 +12,15 @@
             <div class="card-header">
                 Slug: {{$dataCategory->slug}}
             </div>
-        </div>    
+        </div>
+
+        <h6 class="mt-3">Category use in {{$dataCategory->posts->count()}} posts:</h6>
+        <ul class="list-group">
+            @foreach ($dataCategory->posts as $post)
+                <li class="list-group-item">{{$post->name}}</li>
+            @endforeach
+        </ul>
     </div>
+
 
 @endsection

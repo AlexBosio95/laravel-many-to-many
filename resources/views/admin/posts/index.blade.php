@@ -15,10 +15,13 @@
             {{ session('create') }}
         </div>
     @endif
+        <div class="my-3">
+            <a class="gestion-btn" href="{{route('admin.posts.create')}}">Add <i class="fa-solid fa-plus"></i></a>
+            <a class="gestion-btn" href="{{route('admin.category.index')}}">Management <i class="fa-solid fa-book"></i></a>
+            <a class="gestion-btn" href="{{route('admin.tag.index')}}">Management <i class="fa-solid fa-hashtag"></i></a>
+        </div>
 
-        <a class="fs-2" href="{{route('admin.posts.create')}}"><i class="fa-solid fa-square-plus"></i></a>
-
-        <table class="table table-light table-striped">
+        <table class="table table-light table-striped mt-4">
 
             <thead>
                 <tr>
@@ -27,7 +30,7 @@
                     <th scope="col">Slug</th>
                     <th scope="col">Tag</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" class="text-center">Action</th>
                 </tr>
             </thead>
 

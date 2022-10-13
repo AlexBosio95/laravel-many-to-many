@@ -16,7 +16,10 @@
         </div>
     @endif
 
-    <a class="fs-2" href="{{route('admin.category.create')}}"><i class="fa-solid fa-square-plus"></i></a>
+    <div class="my-3">
+        <a class="gestion-btn" href="{{route('admin.posts.index')}}">< Back</i></a>
+        <a class="gestion-btn" href="{{route('admin.category.create')}}">Add <i class="fa-solid fa-plus"></i></a>
+    </div>
 
         <table class="table table-light table-striped">
 
@@ -25,7 +28,7 @@
                     <th scope="col">#</th>
                     <th scope="col">name</th>
                     <th scope="col">Slug</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" class="text-center">Action</th>
                 </tr>
             </thead>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
@@ -54,7 +55,7 @@ class TagController extends Controller
 
         $tag->save();
 
-        return redirect()->route('admin.tags.index')->with('create', 'Item created');
+        return redirect()->route('admin.tag.index')->with('create', 'Item created');
     }
 
     /**
@@ -65,7 +66,8 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        return view('admin.tags.show', compact('tag'));
     }
 
     /**
@@ -76,7 +78,8 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
@@ -88,7 +91,22 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:100|min:2',
+        ]);
+
+        $tag = Tag::findOrFail($id);
+
+        $data = $request->all();
+
+        if ($tag->name !== $data['name']) {
+            $data['slug'] = $this->getUniqueSlug($data['name']);
+        }
+
+        $tag->update($data);
+        $tag->save();
+
+        return redirect()->route('admin.tag.edit', ['tag' => $tag])->with('update', 'Item upadated');
     }
 
     /**
@@ -99,19 +117,21 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
+        return redirect()->route('admin.tag.index', ['tag' => $tag])->with('status', 'Tag deleted');
     }
 
     protected function getUniqueSlug($name){
 
-        $slug = Tag::slug($name, '-');
+        $slug = Str::slug($name, '-');
 
         $checkSlug = Tag::where('slug', $slug)->first();
 
         $count = 1;
 
         while ($checkSlug) {
-            $slug = Tag::slug($name, '-' . $count, '-');
+            $slug = Str::slug($name, '-' . $count, '-');
             $count++;
             $checkSlug = Tag::where('slug', $slug)->first();
         }
