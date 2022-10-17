@@ -9,6 +9,12 @@
         <h2 class="text-center">{{$data->name}}</h2>
 
         <div class="card">
+            @if ($data->cover)
+                    <img src="{{asset('storage/' . $data->cover)}}" class="card-img-top" alt="...">
+                @else
+                    <img src="{{asset('img/no_image.jpg')}}" class="card-img-top" alt="...">
+            @endif
+            
             <div class="card-header">
                 {{$data->slug}}
             </div>

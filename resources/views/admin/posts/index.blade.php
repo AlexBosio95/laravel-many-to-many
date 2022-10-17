@@ -26,6 +26,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Title</th>
                     <th scope="col">Slug</th>
                     <th scope="col">Tag</th>
@@ -39,6 +40,13 @@
                 @foreach ($posts as $post)
                 <tr>
                     <th scope="row">{{$post->id}}</th>
+                    <th scope="row">
+                        @if ($post->cover)
+                                <img src="{{asset('storage/' . $post->cover)}}" class="w-25 " alt="...">
+                            @else
+                                <img src="{{asset('img/no_image.jpg')}}" class="w-25" alt="...">
+                        @endif
+                    </th>
                     <td>{{$post->name}}</td>
                     <td>{{$post->slug}}</td>
                     <td>

@@ -8,8 +8,17 @@
             <a class="gestion-btn" href="{{route('admin.posts.index')}}">< Back</i></a>
         </div>
 
-        <form action="{{route('admin.posts.store')}}" method="POST">
+        <form action="{{route('admin.posts.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
+
+            <div class="mb-2">
+                <label for="coverImage" class="form-label">Image</label>
+                <input type="file" name="image" id="coverImage" class="form-control file">
+                @error('image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
             
             <label for="name" class="form-label">Name</label>
             <div class="input-group mb-3">

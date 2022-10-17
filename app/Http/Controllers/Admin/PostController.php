@@ -8,6 +8,7 @@ use App\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -48,15 +49,19 @@ class PostController extends Controller
             'content' => 'required|max:65535|min:2',
             'category_id' => 'nullable|exists:categories,id',
             'tags' => 'exists:tags,id',
+            'image' => 'nullable|image|max:10000'
         ]);
 
         $data = $request->all();
+
+        $image_path = Storage::put('cover', $data['image']);
+        $data['cover'] = $image_path;
+
 
         $post = new Post();
         $post->fill($data);
 
         $slug = $this->getUniqueSlug($post->name);
-
         $post->slug = $slug;
 
         $post->save();
@@ -108,12 +113,17 @@ class PostController extends Controller
             'name' => 'required|max:100|min:2',
             'content' => 'required|max:65535|min:2',
             'tags' => 'exists:tags,id',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            
 
         ]);
 
+
+
         $post = Post::findOrFail($id);
         $data = $request->all();
+
+        
 
         if ($post->name !== $data['name']) {
             $data['slug'] = $this->getUniqueSlug($data['name']);
